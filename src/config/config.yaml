@@ -1,58 +1,7 @@
 data:
   raw_path: "dataset/BitcoinHeistData.csv"
-  processed_path: "data/processed/processed.csv"
-  test_size: 0.2
-  random_state: 42
-  target_column: "P6_13" # Capacidad de pago mensual
+  processed_path: "data/processed"
+  target_column: "target" # Name of the ransomware family
+
   
-  regions:
-    - 1 # Región Norte
-    - 2 # Región Centro - Norte
   
-  columns:
-    - "ENT" # Entidad federativa
-    - "REGION" # Región
-    - "EDAD_V" # Edad del individuo
-    - "P5_19" # Ingreso del individuo
-    - "P5_19A" # Período en el que recibe su salario
-    - "P5_21" # Gastos mensuales
-    - "P6_12" # Capacidad de endeudamiento
-    - "P6_13" # Target: Capacidad de pago mensual
-
-features:
-  scaling: true
-  encoding: false   # cambia a true si tienes categóricas
-
-models:
-  linear_regression:
-    enabled: true
-    params: {}
-
-  random_forest:
-    enabled: true
-    params:
-      n_estimators: 100
-      max_depth: 10
-      random_state: 42
-
-  support_vector_regressor:
-    enabled: true
-    params:
-      kernel: "rbf"
-      C: 1.0
-      epsilon: 0.1
-
-training:
-  cv_folds: 5
-  scoring: "neg_mean_squared_error"
-  shuffle: true
-
-evaluation:
-  metrics:
-    - rmse
-    - mae
-    - r2
-
-output:
-  metrics_path: "reports/metrics.json"
-  figures_path: "reports/figures/"

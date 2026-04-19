@@ -1,6 +1,8 @@
 from src.config.logging import setUpLogging
 from src.utils.config_loader import load_config
-from src.data.extract import extract_data
+from src.data.extract import extract_data, show_data_summary
+from src.data.transform import transform_data
+from models.train_knn import train
 import logging
 
 
@@ -14,6 +16,17 @@ def main():
     # Extract data
     df = extract_data(config["data"]["raw_path"])
     logger.info(f"Datos originales: {df.shape}")
+
+    # Transform data (remove unsufficiente samples)
+    df = transform_data(df, config)
+
+    # Información general
+    show_data_summary(df, config)
+
+    # Train and plot
+    train(df, config)
+
+
 
 
 if __name__ == "__main__":

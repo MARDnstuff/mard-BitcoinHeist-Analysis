@@ -78,3 +78,60 @@ def train(df: pd.DataFrame, config: dict) -> None:
 
     except Exception as e:  
         logger.error(e, exc_info=True)
+
+
+def train_kNN(df: pd.DataFrame, config: dict) -> dict:
+    try:
+        # Loading data
+        target = config["data"]["target_column"]
+        processed_path = config["data"]["processed_path"]
+        df = df.copy()
+        X = df.drop(columns=[target])
+        Y = df[target]
+        
+        
+        scoring_m={
+            "balanced_accuracy": "balanced_accuracy",
+            "f1": "f1",
+            "recall": "recall",
+            "precision": "precision",
+            "roc_auc": "roc_auc"
+        }
+
+        results = {
+            "k": [],
+            "balanced_accuracy": [],
+            "f1": [],
+            "recall": [],
+            "precision": [],
+            "roc_auc": []
+        }
+
+        for k in range(1, 38):
+            logger.info(f"{k}-NN: Processing")
+            clf = Pipeline(
+                steps=[("scaler", StandardScaler()), ("knn", KNeighborsClassifier(n_neighbors=k ,weights="distance"))]
+            )
+            skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
+
+            scores = cross_validate(clf, X, Y, cv=skf, scoring=scoring_m, n_jobs=-1)
+            logger.info(f"----> {k}-NN: Completed")
+
+            results["k"].append(k)
+            results["balanced_accuracy"].append(scores["test_balanced_accuracy"].mean())
+            results["f1"].append(scores["test_f1"].mean())
+            results["recall"].append(scores["test_recall"].mean())
+            results["precision"].append(scores["test_precision"].mean())
+            results["roc_auc"].append(scores["test_roc_auc"].mean())
+
+        
+        short_id = uuid.uuid4().hex[:8]
+        with open(f"src/{processed_path}/scores_{short_id}_k1to37.json", "w") as f:
+            json.dump(results, f, indent=4)
+
+        logger.info("Scores have been saved")
+
+        return results
+
+    except Exception as e:  
+        logger.error(e, exc_info=True)

@@ -1,11 +1,8 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from sklearn.inspection import DecisionBoundaryDisplay
 from sklearn.model_selection import StratifiedKFold, cross_validate
 from sklearn.model_selection import train_test_split
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import get_scorer_names
 import matplotlib.pyplot as plt
 import pandas as pd

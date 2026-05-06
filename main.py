@@ -44,7 +44,7 @@ def main():
     # start_kNN(df, config)
     
     # Decision Tree
-    start_DT(df, config)
+    # start_DT(df, config)
 
 
 

@@ -16,6 +16,10 @@ def transform_data(df: pd.DataFrame, config: dict) -> pd.DataFrame:
         df = df.drop_duplicates()
         df = df.dropna(subset=[target])
 
+        output_path = f"src/{config['data']['processed_path']}/dataset_processed.csv"
+        df.to_csv(output_path, index=False)
+        logger.info(f"CSV procesado guardado en: {output_path}")    
+
         logger.info(f"Sample: \n{df.head()}")
 
         return df

@@ -1,5 +1,6 @@
 data:
   raw_path: "dataset/BitcoinHeistData.csv"
+  raw_path_balanced: "src/data/processed/dataset_processed.csv"
   processed_path: "data/processed"
   target_column: "target" # Name of the ransomware family
 

@@ -1,8 +1,8 @@
 from src.config.logging import setUpLogging
 from src.utils.config_loader import load_config
 from src.utils.graph_scores import graph_score_kNN
-from src.data.extract import extract_data, show_data_summary
-from src.data.transform import transform_data
+from src.data.extract import extract_data, show_data_summary, extract_data_arff
+from src.data.transform import transform_data, get_sample_data
 from src.models.train_knn import train, train_kNN
 from src.models.train_DT import train_DT
 import pandas as pd
@@ -31,14 +31,14 @@ def main():
     logger.info("Configuration has been loaded")
 
     # Extract data
-    df = extract_data(config["data"]["raw_path"])
+    df = extract_data(config["data"]["raw_path_balanced"])
     logger.info(f"Datos originales: {df.shape}")
 
     # Transform data (remove unsufficiente samples)
-    df = transform_data(df, config)
+    df = get_sample_data(df, config)
 
     # Información general
-    show_data_summary(df, config)
+    # show_data_summary(df, config)
 
     # kNN process
     # start_kNN(df, config)

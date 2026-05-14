@@ -1,4 +1,5 @@
 import pandas as pd
+from scipy.io import arff
 import logging
 
 logger = logging.getLogger(__name__)
@@ -12,6 +13,18 @@ def extract_data(path: str) -> pd.DataFrame:
         return df
     except Exception as e:
         logger.error(e, exc_info=True)
+
+def extract_data_arff(path: str) -> pd.DataFrame:
+    """
+    Extract data from a raw data path with arff format
+    """
+    try:
+        data, meta = arff.loadarff(path)
+        
+        return pd.DataFrame(data)
+    except Exception as e:
+        logger.error(e, exc_info=True)
+
 
 def show_data_summary(df: pd.DataFrame, config: dict) -> None:
     """
